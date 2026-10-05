@@ -1,0 +1,14 @@
+{
+  "name": "one-finger-game",
+  "version": "1.0.0",
+  "description": "A simple one-finger tap game",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8080"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
