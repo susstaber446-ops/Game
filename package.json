@@ -1,14 +1,14 @@
 {
-  "name": "one-finger-game",
+  "name": "sky-ace-cloud-surfer",
   "version": "1.0.0",
-  "description": "A simple one-finger tap game",
+  "description": "An amazing, visually stunning one-tap mobile plane game",
   "main": "index.html",
   "scripts": {
-    "start": "http-server -p 8080"
+    "dev": "vite --host 0.0.0.0 --port 5173"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "vite": "^5.0.0"
   }
 }
