@@ -4,17 +4,17 @@ const FLAP_STRENGTH = -6;
 const COIN_SPAWN_RATE = 1500; // ms
 const BUILDING_SPAWN_RATE = 2000; // ms
 const CLOUD_SPAWN_RATE = 3000; // ms
-const COIN_SIZE = 20;
-const BUILDING_MIN_WIDTH = 40;
-const BUILDING_MAX_WIDTH = 120;
-const BUILDING_HEIGHT_MIN = 50;
-const BUILDING_HEIGHT_MAX = 180;
-const CLOUD_MIN_SIZE = 40;
-const CLOUD_MAX_SIZE = 80;
+const COIN_SIZE = 24;
+const BUILDING_MIN_WIDTH = 50;
+const BUILDING_MAX_WIDTH = 140;
+const BUILDING_HEIGHT_MIN = 60;
+const BUILDING_HEIGHT_MAX = 200;
+const CLOUD_MIN_SIZE = 60;
+const CLOUD_MAX_SIZE = 100;
 
 // Game state
 let score = 0;
-let planeY = 200; // initial y position (from top? we'll use top offset)
+let planeY = 200; // initial y position (from top)
 let planeVelocityY = 0;
 const planeElement = document.getElementById('plane');
 const scoreElement = document.getElementById('score');
@@ -33,9 +33,20 @@ let lastCloudSpawn = 0;
 let gameOver = false;
 let animationFrameId = null;
 
-// Plane dimensions (approximate)
-const PLANE_WIDTH = 60;
-const PLANE_HEIGHT = 40;
+// Plane dimensions (matching container)
+const PLANE_WIDTH = 80;
+const PLANE_HEIGHT = 50;
+
+// Initialize plane inner parts
+function initPlane() {
+    planeElement.innerHTML = `
+        <div class="fuselage"></div>
+        <div class="cockpit"></div>
+        <div class="wing"></div>
+        <div class="tail"></div>
+    `;
+}
+initPlane();
 
 // Input handling
 function handleTap() {
@@ -78,7 +89,7 @@ function update(timestamp) {
     planeY += planeVelocityY;
 
     // Keep plane within vertical bounds (top and bottom of visible area)
-    const maxY = window.innerHeight - PLANE_HEIGHT - 200; // above buildings
+    const maxY = window.innerHeight - PLANE_HEIGHT - 220; // above buildings
     if (planeY < 0) {
         planeY = 0;
         planeVelocityY = 0;
@@ -204,15 +215,7 @@ function spawnCloud() {
 function showGameOver() {
     cancelAnimationFrame(animationFrameId);
     const gameOverDiv = document.createElement('div');
-    gameOverDiv.style.position = 'absolute';
-    gameOverDiv.style.top = '50%';
-    gameOverDiv.style.left = '50%';
-    gameOverDiv.style.transform = 'translate(-50%, -50%)';
-    gameOverDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
-    gameOverDiv.style.color = 'white';
-    gameOverDiv.style.padding = '20px';
-    gameOverDiv.style.borderRadius = '10px';
-    gameOverDiv.style.textAlign = 'center';
+    gameOverDiv.id = 'game-over';
     gameOverDiv.innerHTML = `
         <h2>Game Over</h2>
         <p>Score: ${score}</p>
@@ -225,7 +228,7 @@ function showGameOver() {
 // Restart game
 function restartGame() {
     // Remove game over div
-    const gameOverDiv = document.querySelector('div[style*="position: absolute"]');
+    const gameOverDiv = document.getElementById('game-over');
     if (gameOverDiv) gameOverDiv.remove();
     // Reset state
     score = 0;
